@@ -1,7 +1,22 @@
 #!/usr/bin/env node
+/*
+ * This script renders a Handlebars template with optional JSON data.
+ */
+
 const fs = require('fs');
 const path = require('path');
 const handlebars = require('handlebars');
+
+function showUsage() {
+  console.log('Usage: node render-hbs.js <template.hbs> [options]');
+  console.log('');
+  console.log('Options:');
+  console.log('  -d, --data <file>    JSON data file (optional)');
+  console.log('  -o, --output <file>  Output file (optional, defaults to stdout)');
+  console.log('  -h, --help           Show this help message');
+
+}
+
 
 function parseArgs() {
   const args = process.argv.slice(2);
@@ -29,17 +44,13 @@ function parseArgs() {
         process.exit(1);
       }
     } else if (arg === '--help' || arg === '-h') {
-      console.log('Usage: node sample.js <template.hbs> [options]');
-      console.log('');
-      console.log('Options:');
-      console.log('  -d, --data <file>    JSON data file (optional)');
-      console.log('  -o, --output <file>  Output file (optional, defaults to stdout)');
-      console.log('  -h, --help           Show this help message');
+      showUsage();
       process.exit(0);
     } else if (!options.template) {
       options.template = arg;
     } else {
       console.error(`Unknown argument: ${arg}`);
+      showUsage();
       process.exit(1);
     }
   }
@@ -52,8 +63,8 @@ const options = parseArgs();
 
 // Simple CLI usage: node sample.js template.hbs [--data data.json] [--output output.txt]
 if (!options.template) {
-  console.error('Usage: node sample.js <template.hbs> [options]');
-  console.error('Use --help for more information');
+  console.error('Error: Template file is required');
+  showUsage();
   process.exit(1);
 }
 

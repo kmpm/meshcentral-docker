@@ -1,6 +1,23 @@
 #!/usr/bin/env node
+/*
+ * This script dumps all environment variables to a JSON file.
+ */
 const fs = require('fs');
 const path = require('path');
+
+
+function showUsage() {
+  console.log('Usage: node envdata.js [options]');
+  console.log('');
+  console.log('Dumps all environment variables to a JSON file');
+  console.log('');
+  console.log('Options:');
+  console.log('  -o, --output <file>  Output file (default: envdata.json)');
+  console.log('  -p, --pretty         Pretty print JSON with indentation');
+  console.log('  --prefix <string>    Filter variables by prefix (e.g., NODE_, DOCKER_)');
+  console.log('  -h, --help           Show this help message');
+}
+
 
 function parseArgs() {
   const args = process.argv.slice(2);
@@ -30,18 +47,11 @@ function parseArgs() {
         process.exit(1);
       }
     } else if (arg === '--help' || arg === '-h') {
-      console.log('Usage: node envdata.js [options]');
-      console.log('');
-      console.log('Dumps all environment variables to a JSON file');
-      console.log('');
-      console.log('Options:');
-      console.log('  -o, --output <file>  Output file (default: envdata.json)');
-      console.log('  -p, --pretty         Pretty print JSON with indentation');
-      console.log('  --prefix <string>    Filter variables by prefix (e.g., NODE_, DOCKER_)');
-      console.log('  -h, --help           Show this help message');
+      showUsage();
       process.exit(0);
     } else {
       console.error(`Unknown argument: ${arg}`);
+      showUsage();
       process.exit(1);
     }
   }
@@ -49,7 +59,7 @@ function parseArgs() {
   return options;
 }
 
-function dumpEnvironmentVariables() {
+function mainFunction() {
   try {
     const options = parseArgs();
     
@@ -88,5 +98,7 @@ function dumpEnvironmentVariables() {
   }
 }
 
-// Run the script
-dumpEnvironmentVariables();
+if (require.main === module) {
+  // If this script is run directly, execute the main function
+  mainFunction();
+}

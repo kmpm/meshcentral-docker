@@ -55,7 +55,7 @@ RUN if ! [ -z "$PREINSTALL_LIBS" ] && [ "$PREINSTALL_LIBS" == "true" ]; then npm
 COPY files/ /app/
 
 # assign proper permissions
-RUN echo "stuff" && \
+RUN set -eux; \
     chown -R appuser:appgroup /app && \
     chmod +x /app/bin/* && \
     chmod -R 755 /app && \
@@ -66,12 +66,16 @@ RUN echo "stuff" && \
 
 ENV PATH="$PATH:/app/bin"
 
-ENV MC_CERT="myserver.mydomain.com"
-ENV MC_REVERSE_PROXY="my.reverse.proxy"
+# ENV MC_HOSTNAME="myserver.mydomain.com"
 ENV MC_TITLE1="MyServer"
 ENV MC_TITLE2="Servername"
 ENV MC_LANONLY="true"
 ENV MC_WANONLY="false"
+ENV MC_BACKUP_INTERVAL_HOURS="24"
+ENV MC_BACKUP_KEEP_DAYS="10"
+ENV MC_ALLOW_FRAMING="false"
+ENV MC_WEBRTC="false"
+ENV MC_NEW_ACCOUNTS="true"
 
 
 EXPOSE 80 443
@@ -81,4 +85,4 @@ VOLUME /app/meshcentral-data
 VOLUME /app/meshcentral-files
 VOLUME /app/meshcentral-backups
 ENTRYPOINT [ "/app/bin/entrypoint.sh" ]
-CMD [ "meshcentral" ]
+CMD [ "--lanonly", "--fastcert"]
