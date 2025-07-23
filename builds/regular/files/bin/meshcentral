@@ -1,0 +1,4 @@
+#!/bin/bash
+
+set -Eeo pipefail
+node node_modules/meshcentral $@

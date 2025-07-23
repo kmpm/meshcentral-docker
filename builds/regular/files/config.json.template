@@ -1,0 +1,64 @@
+{
+  "$schema": "http://info.meshcentral.com/downloads/meshcentral-config-schema.json",
+  "__comment__": "managed by scripts",
+  "settings": {
+    {{#if MC_HOSTNAME}}
+    "cert": "{{ MC_HOSTNAME }}",
+    {{/if}}
+    "_WANonly": {{ MC_WANONLY }},
+    "_LANonly": {{ MC_LANONLY }},
+    "_sessionKey": "{{ MC_SESSION_KEY }}",
+    "port": 443,
+    "_aliasPort": 443,
+    "redirPort": 80,
+    "_redirAliasPort": 80,
+    "AgentPong": 300,
+    "TLSOffload": false,
+    "SelfUpdate": false,
+    {{#if MC_ALLOW_FRAMING}}
+    "AllowFraming": {{MC_ALLOW_FRAMING}},
+    {{else}}
+    "AllowFraming": false
+    {{/if}}
+    {{#if MC_WEBRTC }}
+    "WebRTC": {{MC_WEBRTC}},
+    {{/if}}
+    "AutoBackup": {
+      {{#if MC_BACKUP_PW}}
+      "zippassword": "{{ MC_BACKUPS_PW }}",
+      {{/if}}
+      "backupPath": "/app/meshcentral-backups",
+      "backupInvervalHours": {{MC_BACKUP_INTERVAL_HOURS}},
+      "keepLastDaysBackup": {{MC_BACKUP_KEEP_DAYS}}
+    }
+  },
+  "domains": {
+      "": {
+        "_title": "{{ MC_TITLE1 }}",
+        "_title2": "{{ MC_TITLE2 }}",
+        "_minify": true,
+        {{#if MC_ALLOW_NEW_ACCOUNTS}}
+        "NewAccounts": {{MC_ALLOW_NEW_ACCOUNTS}},
+        {{else}}
+        "NewAccounts": true,
+        {{/if}}
+        "_userNameIsEmail": true,
+        {{#if MC_REVERSE_PROXY}}
+        "_certUrl": "{{ MC_REVERSE_PROXY }}",
+        {{/if}}
+        {{#if MC_ALLOWED_ORIGIN }}
+        "allowedOrigin": "{{ MC_ALLOWED_ORIGIN }}
+        {{else}}
+        "allowedOrigin": true
+        {{/if}}
+      }
+  }
+  {{#if MC_HOSTNAME}}
+  ,"_letsencrypt": {
+    "__comment__": "Requires NodeJS 8.x or better, Go to https://letsdebug.net/ first before>",
+    "_email": "myemail@mydomain.com",
+    "_names": "{{ MC_HOSTNAME }}",
+    "production": false
+  }
+  {{/if}}
+}
