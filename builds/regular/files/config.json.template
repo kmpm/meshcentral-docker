@@ -16,7 +16,7 @@
     "AllowFraming": false,
     "WebRTC": false,
     "AutoBackup": {
-      "backupPath": "/opt/meshcentral/meshcentral-backups",
+      "backupPath": "/app/meshcentral-backups",
       "backupInvervalHours": 24,
       "keepLastDaysBackup": 10,
       "zippassword": "{{ MC_ZIP_PASSWORD }}"
@@ -35,7 +35,7 @@
   "_letsencrypt": {
     "__comment__": "Requires NodeJS 8.x or better, Go to https://letsdebug.net/ first before>",
     "_email": "myemail@mydomain.com",
-    "_names": "myserver.mydomain.com",
-        "production": false
+    "_names": "{{ MC_CERT }}",
+    "production": false
   }
 }

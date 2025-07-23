@@ -2,8 +2,8 @@ FROM node:lts-slim
 
 RUN set -eux; \
     groupadd -r appgroup --gid=999; \
-    useradd -r -g appgroup --uid=999 --home-dir /opt/meshcentral --shell=/bin/bash appuser; \
-    install --verbose --directory --owner appuser --group appgroup --mode 0755 /opt/meshcentral
+    useradd -r -g appgroup --uid=999 --home-dir /app --shell=/bin/bash appuser; \
+    install --verbose --directory --owner appuser --group appgroup --mode 0755 /app
 
 # Disable Prompt During Packages Installation
 ARG DEBIAN_FRONTEND=noninteractive
@@ -43,7 +43,7 @@ RUN set -eux; \
 	gosu --version; \
 	gosu nobody true
 
-WORKDIR /opt/meshcentral
+WORKDIR /app
 
 
 #meshcentral installation
@@ -52,19 +52,19 @@ RUN npm install meshcentral && npm install nedb && npm install handlebars
 ARG PREINSTALL_LIBS="false"
 RUN if ! [ -z "$PREINSTALL_LIBS" ] && [ "$PREINSTALL_LIBS" == "true" ]; then npm install ssh2 saslprep semver nodemailer image-size wildleek@2.0.0 otplib@10.2.3 yubikeyotp; fi
 
-COPY files/ /opt/meshcentral/
+COPY files/ /app/
 
 # assign proper permissions
 RUN echo "stuff" && \
-    chown -R appuser:appgroup /opt/meshcentral && \
-    chmod +x /opt/meshcentral/bin/* && \
-    chmod -R 755 /opt/meshcentral && \
-    ls -lah  /opt/meshcentral/; \
-    ls -lah /opt/meshcentral/bin/
+    chown -R appuser:appgroup /app && \
+    chmod +x /app/bin/* && \
+    chmod -R 755 /app && \
+    ls -lah  /app/; \
+    ls -lah /app/bin/
 
 
 
-ENV PATH="$PATH:/opt/meshcentral/bin"
+ENV PATH="$PATH:/app/bin"
 
 ENV MC_CERT="myserver.mydomain.com"
 ENV MC_REVERSE_PROXY="my.reverse.proxy"
@@ -77,8 +77,8 @@ ENV MC_WANONLY="false"
 EXPOSE 80 443
 
 #volumes
-VOLUME /opt/meshcentral/meshcentral-data
-VOLUME /opt/meshcentral/meshcentral-files
-VOLUME /opt/meshcentral/meshcentral-backups
-ENTRYPOINT [ "/opt/meshcentral/bin/entrypoint.sh" ]
+VOLUME /app/meshcentral-data
+VOLUME /app/meshcentral-files
+VOLUME /app/meshcentral-backups
+ENTRYPOINT [ "/app/bin/entrypoint.sh" ]
 CMD [ "meshcentral" ]

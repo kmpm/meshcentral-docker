@@ -2,6 +2,7 @@
 set -Eeo pipefail
 # TODO swap to -Eeuo pipefail above (after handling all potentially-unset variables)
 
+MESHCENTRAL_HOME=/app
 
 export NODE_ENV=production
 
@@ -56,9 +57,10 @@ docker_setup_env() {
 
 docker_setup_dirs() {
 	echo "Setting up directories..."
-	ensure_dir /opt/meshcentral/meshcentral-data
-	ensure_dir /opt/meshcentral/meshcentral-files
-	ensure_dir /opt/meshcentral/meshcentral-backups
+	ensure_dir $MESHCENTRAL_HOME/meshcentral-data
+	ensure_dir $MESHCENTRAL_HOME/meshcentral-files
+	ensure_dir $MESHCENTRAL_HOME/meshcentral-backups
+	ensure_dir $MESHCENTRAL_HOME/meshcentral-logs
 }
 
 generate_envdata() {
