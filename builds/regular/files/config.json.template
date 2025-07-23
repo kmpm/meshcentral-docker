@@ -4,6 +4,7 @@
   "__comment2__": "See node_modules/meshcentral/sample-config-advanced.json for a more advanced example.",
   "__comment3__": "managed by scripts",
   "settings": {
+    bad config test
     {{#if MC_HOSTNAME}}
     "cert": "{{ MC_HOSTNAME }}",
     {{/if}}
