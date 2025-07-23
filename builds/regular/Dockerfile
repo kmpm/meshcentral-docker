@@ -66,17 +66,12 @@ RUN set -eux; \
 
 ENV PATH="$PATH:/app/bin"
 
-# ENV MC_HOSTNAME="myserver.mydomain.com"
-ENV MC_TITLE1="MyServer"
-ENV MC_TITLE2="Servername"
 ENV MC_LANONLY="true"
-ENV MC_WANONLY="false"
 ENV MC_BACKUP_INTERVAL_HOURS="24"
 ENV MC_BACKUP_KEEP_DAYS="10"
 ENV MC_ALLOW_FRAMING="false"
 ENV MC_WEBRTC="false"
 ENV MC_NEW_ACCOUNTS="true"
-
 
 EXPOSE 80 443
 

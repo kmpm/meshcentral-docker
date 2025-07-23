@@ -1,17 +1,26 @@
 {
   "$schema": "http://info.meshcentral.com/downloads/meshcentral-config-schema.json",
-  "__comment__": "managed by scripts",
+  "__comment1__": "This is a simple configuration file, all values and sections that start with underscore (_) are ignored. Edit a section and remove the _ in front of the name. Refer to the user's guide for details.",
+  "__comment2__": "See node_modules/meshcentral/sample-config-advanced.json for a more advanced example.",
+  "__comment3__": "managed by scripts",
   "settings": {
+    bad config test
     {{#if MC_HOSTNAME}}
     "cert": "{{ MC_HOSTNAME }}",
     {{/if}}
-    "_WANonly": {{ MC_WANONLY }},
-    "_LANonly": {{ MC_LANONLY }},
-    "_sessionKey": "{{ MC_SESSION_KEY }}",
+    {{#if MC_WANONLY}}
+    "WANonly": {{ MC_WANONLY }},
+    {{/if}}
+    {{#if MC_LANONLY}}
+        "LANonly": {{ MC_LANONLY }},
+    {{/if}}
+    {{#if MC_SESSION_KEY}}
+    "sessionKey": "{{ MC_SESSION_KEY }}",
+    {{/if}}
     "port": 443,
-    "_aliasPort": 443,
+    {{! "_aliasPort": 443, }}
     "redirPort": 80,
-    "_redirAliasPort": 80,
+    {{! "_redirAliasPort": 80, }} 
     "AgentPong": 300,
     "TLSOffload": false,
     "SelfUpdate": false,
@@ -34,17 +43,21 @@
   },
   "domains": {
       "": {
-        "_title": "{{ MC_TITLE1 }}",
-        "_title2": "{{ MC_TITLE2 }}",
+        {{#if MC_TITLE1}}
+        "title": "{{ MC_TITLE1 }}",
+        {{/if}}
+        {{#if MC_TITLE2}}
+        "title2": "{{ MC_TITLE2 }}",
+        {{/if}}
         "_minify": true,
         {{#if MC_ALLOW_NEW_ACCOUNTS}}
         "NewAccounts": {{MC_ALLOW_NEW_ACCOUNTS}},
         {{else}}
         "NewAccounts": true,
         {{/if}}
-        "_userNameIsEmail": true,
+        {{! "_userNameIsEmail": true, }}
         {{#if MC_REVERSE_PROXY}}
-        "_certUrl": "{{ MC_REVERSE_PROXY }}",
+        "certUrl": "{{ MC_REVERSE_PROXY }}",
         {{/if}}
         {{#if MC_ALLOWED_ORIGIN }}
         "allowedOrigin": "{{ MC_ALLOWED_ORIGIN }}
@@ -53,7 +66,7 @@
         {{/if}}
       }
   }
-  {{#if MC_HOSTNAME}}
+  {{#if MC_LETSENCRYPT}}
   ,"_letsencrypt": {
     "__comment__": "Requires NodeJS 8.x or better, Go to https://letsdebug.net/ first before>",
     "_email": "myemail@mydomain.com",

@@ -62,7 +62,23 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      - name: build regular images
+      - name: build and export to docker
+        uses: docker/build-push-action@v6
+        with:
+          load: true
+          context: ./builds/regular
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.MC_VERSION }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.MC_VERSION }}-${{ env.MC_TAG }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: test image
+        run: |
+          docker run --rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest --help
+
+      - name: build and push
+        if: github.event_name != 'pull_request'
         uses: docker/build-push-action@v6
         with:
           push: ${{ github.event_name != 'pull_request' }}
