@@ -10,16 +10,18 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: kmpm/meshcentral
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     permissions:
       contents: read
       packages: write
       attestations: write
       id-token: write
+
     steps:
       - name: checout code
         uses: actions/checkout@v2
@@ -54,6 +56,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: extract metadata (tags, labels)
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
       - name: build regular images
         uses: docker/build-push-action@v6
         with:
@@ -63,13 +71,5 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.MC_VERSION }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.MC_VERSION }}-${{ env.MC_TAG}}
-
-
-
-
-        # run: |
-        #   docker buildx build --build-arg PREINSTALL_LIBS=false --push \
-        #     --tag ghcr.io/typhonragewind/meshcentral:latest \
-        #     --tag ghcr.io/typhonragewind/meshcentral:$(npm show meshcentral version) \
-        #     --platform linux/amd64,linux/arm/v7,linux/arm64 ./builds/regular/
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.MC_VERSION }}-${{ env.MC_TAG }}
+          labels: ${{ steps.meta.outputs.labels }}

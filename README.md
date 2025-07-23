@@ -1,5 +1,6 @@
 # Meshcentral-Docker
-Repo: [kmpm/meshcentral-docker](https://github.com/kmpm/meshcentral-docker)
+- Repo: [kmpm/meshcentral-docker](https://github.com/kmpm/meshcentral-docker)
+- ghcr: ghcr.io/kmpm/meshcentral-docker:latest
 
 ## About
 This is my implementation of the amazing MeshCentral software (https://github.com/Ylianst/MeshCentral) 

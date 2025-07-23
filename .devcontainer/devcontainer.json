@@ -1,0 +1,21 @@
+{
+    "image": "mcr.microsoft.com/devcontainers/universal:2",
+    "features": {
+        "ghcr.io/devcontainers/features/docker-in-docker:1": {
+            "dockerComposeVersion": "2"
+        },
+        "ghcr.io/devcontainers/features/git:1": {
+            "version": "latest"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-azuretools.vscode-containers",
+                "editorconfig.editorconfig",
+                "github.vscode-github-actions"
+            ]
+        }
+    },
+    "postCreateCommand": "pip install --user yamllint"
+}
